@@ -13,13 +13,14 @@ import com.ugarte.springboot.app.models.entity.Cliente;
 @Service("clienteService")
 public class iClienteServiceImpl implements iClienteService {
 
+    //!AQUI ESTAMOS IMPLEMENTANDO LA INTERFACE IClienteDao para poder usar todos sus metodos CRUD
     @Autowired
     private IClienteDao clienteDao;
 
     @Override
     @Transactional(readOnly = true)//!Declaramos que solo es de lectura y no de escritura
     public List<Cliente> findAll() {
-        return clienteDao.findAll();
+        return (List<Cliente>) clienteDao.findAll();
     }
 
     @Override
@@ -31,13 +32,13 @@ public class iClienteServiceImpl implements iClienteService {
     @Override
     @Transactional(readOnly = true)
     public Cliente buscar(Long id) {
-        return clienteDao.buscar(id);
+        return clienteDao.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
     public void eliminar(Long id) {
-        clienteDao.eliminar(id);
+        clienteDao.deleteById(id);
     }
 
     

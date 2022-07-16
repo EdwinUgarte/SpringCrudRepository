@@ -27,7 +27,6 @@ public class Cliente implements Serializable {
 
     @Id // !Notacion para decir que esta es la llave primaria en la BD
     @GeneratedValue(strategy = GenerationType.IDENTITY) // !Indicamos que queremos que sea autoincremental
-
     private Long id;
     
     @NotEmpty //!Se tiene que agregar la dependencia de spring validation en el archivo pom

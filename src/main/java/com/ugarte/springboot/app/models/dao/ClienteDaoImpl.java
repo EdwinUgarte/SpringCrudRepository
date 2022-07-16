@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import com.ugarte.springboot.app.models.entity.Cliente;
 
@@ -17,23 +17,20 @@ public class ClienteDaoImpl implements IClienteDao{
     private EntityManager eManager; //!Se encarga de hacer las operaciones a bases de datos pero a nivel Objetos en las clases Entity 
 
     @SuppressWarnings("unchecked")//!Para suprimir los mensajes que marca el editor
-    @Transactional(readOnly = true)//!Declaramos que solo es de lectura y no de escritura
     @Override
     public List<Cliente> findAll() {
         //? creamos una consulta con .createQuery y despues jalamos el resultado con .getResultList()
         return eManager.createQuery("from Cliente").getResultList();
     }
     
-        @Override
-        @Transactional(readOnly = true)
-        public Cliente buscar(Long id) {
+    @Override
+     public Cliente buscar(Long id) {
             
-            return eManager.find(Cliente.class, id);//!Buscamos al usuario con find que nos pide la clase y la llave primaria
+    return eManager.find(Cliente.class, id);//!Buscamos al usuario con find que nos pide la clase y la llave primaria
             
-        }
+    }
     
     @Override
-    @Transactional
     public void save(Cliente cliente) {
         if(cliente.getId() != null && cliente.getId() > 0){
             eManager.merge(cliente);//!mergue(Object entity) actualiza los datos del objeto 
@@ -44,7 +41,6 @@ public class ClienteDaoImpl implements IClienteDao{
     }
 
     @Override
-    @Transactional
     public void eliminar(Long id) {
         Cliente cliente = buscar(id);
         eManager.remove(cliente);

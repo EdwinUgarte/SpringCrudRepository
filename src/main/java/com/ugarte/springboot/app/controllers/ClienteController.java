@@ -17,16 +17,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.ugarte.springboot.app.models.dao.IClienteDao;
 import com.ugarte.springboot.app.models.entity.Cliente;
+import com.ugarte.springboot.app.models.service.iClienteService;
 
 @Controller
 @SessionAttributes("cliente")//!Es necesario utilizar SessionAttributes, ya que necesitamos mantener la consistencia de datos en "cliente" para poder actualizarlo, de lo contrario insertaria uno nuevo
 public class ClienteController {
     
     @Autowired
-    @Qualifier("clienteDaoJPA")
-    private IClienteDao clienteDao;
+    @Qualifier("clienteService")
+    private iClienteService clienteService;
 
     @GetMapping({"/", "/home", "/index"})
     public String home(Model model){
@@ -40,7 +40,7 @@ public class ClienteController {
     public String listar(Model model){
         
         model.addAttribute("titulo", "Listado de clientes: ");
-        model.addAttribute("clientes", clienteDao.findAll());
+        model.addAttribute("clientes", clienteService.findAll());
         return "listar"; //!IMPORTANTE Aqui va el nombre de la vista que retornamos 
     }
 
@@ -60,7 +60,7 @@ public class ClienteController {
             return "form";
         }
 
-        clienteDao.save(cliente);
+        clienteService.save(cliente);
         status.setComplete();//!Se cierra la sesion una ves actualizado el usuario
         return "redirect:listar";
     }
@@ -70,7 +70,7 @@ public class ClienteController {
 
         Cliente cliente = null;
         if(id>0){
-            cliente = clienteDao.buscar(id);
+            cliente = clienteService.buscar(id);
         }else{
             return "redirect:/listar";
         }
@@ -84,7 +84,7 @@ public class ClienteController {
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable(value = "id") Long id){
         if(id > 0){
-            clienteDao.eliminar(id);
+            clienteService.eliminar(id);
         }
         return "redirect:/listar";
     }
